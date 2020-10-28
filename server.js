@@ -86,7 +86,7 @@ app.get('/messages/:Id', (req, res) => {
 // Delete a message, by ID;
 app.delete('/messages/:Id', (req, res) => {
     const Id  = req.params.Id;
-    const elementIndex = messages.findIndex(m => m.id === parseInt(Id));
+    const elementIndex = messages.findIndex(m => m.id == Id);
   
     if(elementIndex === -1) {
       res.status(404).send('Not found');
@@ -95,6 +95,28 @@ app.delete('/messages/:Id', (req, res) => {
       res.status(200).send('Message deleted');
     }
 });
+
+// Update the message;
+
+app.put('/messages/:Id', (req,res)=>{
+  const Id = req.params.Id;
+  
+  let newMessage = {
+    text : req.body.text,
+    from : req.body.from
+  }
+
+  let existingMessage = messages.find(x => x.id == Id);
+
+    if (existingMessage !== "" && newMessage !== "") {
+      existingMessage.text = newMessage.text;
+      existingMessage.from = newMessage.from;
+      res.status(200).send('Message updated');
+    } else{
+      res.status(400).send('Message not found');
+    }
+});
+
 
 app.listen(3003, function () {
   console.log("Server is listening on port 3003. Ready to accept requests!");
