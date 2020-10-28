@@ -17,7 +17,7 @@ const welcomeMessage = {
 //This array is our "data store".
 //We will start with one message in the array.
 //Note: messages will be lost when Glitch restarts our server.
-let messages = [welcomeMessage];
+const messages = [welcomeMessage];
 
 app.get("/", function (request, response) {
   response.sendFile(__dirname + "/index.html");
@@ -85,10 +85,15 @@ app.get('/messages/:Id', (req, res) => {
 
 // Delete a message, by ID;
 app.delete('/messages/:Id', (req, res) => {
-    const { Id } = req.params;
-    const deletedElement = messages.findIndex(m => m.id == Id);
-    messages = messages.splice(deletedElement, 1);
-    res.send("Message deleted");
+    const Id  = req.params.Id;
+    const elementIndex = messages.findIndex(m => m.id === parseInt(Id));
+  
+    if(elementIndex === -1) {
+      res.status(404).send('Not found');
+    } else { 
+      messages.splice(elementIndex, 1);
+      res.status(200).send('Message deleted');
+    }
 });
 
 app.listen(3003, function () {
