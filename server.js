@@ -118,6 +118,8 @@ app.put('/messages/:Id', (req,res)=>{
 });
 
 
-app.listen(3003, function () {
-  console.log("Server is listening on port 3003. Ready to accept requests!");
-});
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
+app.listen(port, console.log('server is running'));
